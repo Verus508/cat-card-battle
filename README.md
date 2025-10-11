@@ -80,10 +80,9 @@ npm run dev
 - **Build Tool**: Vite
 - **API**: TheCatAPI
 
-````
-
 ## 🎯 Roadmap
 
+- [x] Add card rarity and statistics system
 - [x] Integrate TheCatAPI for real cat images
 - [ ] Add battle mechanics and gameplay
 - [ ] Implement card collection system
@@ -130,6 +129,56 @@ VITE_CAT_API_KEY=your_api_key_here
 ````
 
 **Note**: Never commit your `.env` file to version control. It's already included in `.gitignore`.
+
+## Rarity and Statistics system
+
+To draw a random rarity and statistics use `game/stats.ts` module with `drawRarity` and `drawStatistics` respectively.Generated using weighted algorithm with `Math.random()` method.
+
+### Usage
+
+```ts
+drawRarity() -> Rarity
+```
+
+```ts
+drawRarity(rarity: Rarity) -> Stats
+```
+
+### Rarity chart with Statistics
+
+| Name      | Chance | ATK        | DEF        | HP           |
+| --------- | ------ | ---------- | ---------- | ------------ |
+| Common    | 60%    | 3-8 (6)    | 3-7 (5)    | 19-24 (22)   |
+| Uncommon  | 25%    | 6-12 (9)   | 4-8 (6)    | 27-53 (40)   |
+| Rare      | 10%    | 10-16 (13) | 6-10 (8)   | 32-81 (57)   |
+| Epic      | 4%     | 16-23 (20) | 9-13 (11)  | 55-116 (86)  |
+| Legendary | 1%     | 24-29 (27) | 13-19 (16) | 73-145 (109) |
+
+**Note**: Never commit your `.env` file to version control. It's already included in `.gitignore`.
+
+## Rarity and Statistics system
+
+To draw a random rarity and statistics use `game/stats.ts` module with `drawRarity` and `drawStatistics` respectively.Generated using weighted algorithm with `Math.random()` method.
+
+### Usage
+
+```ts
+drawRarity() -> Rarity
+```
+
+```ts
+drawRarity(rarity: Rarity) -> Stats
+```
+
+### Rarity chart with Statistics
+
+| Name      | Chance | ATK        | DEF        | HP           |
+| --------- | ------ | ---------- | ---------- | ------------ |
+| Common    | 60%    | 3-8 (6)    | 3-7 (5)    | 19-24 (22)   |
+| Uncommon  | 25%    | 6-12 (9)   | 4-8 (6)    | 27-53 (40)   |
+| Rare      | 10%    | 10-16 (13) | 6-10 (8)   | 32-81 (57)   |
+| Epic      | 4%     | 16-23 (20) | 9-13 (11)  | 55-116 (86)  |
+| Legendary | 1%     | 24-29 (27) | 13-19 (16) | 73-145 (109) |
 
 ## 📄 License
 
