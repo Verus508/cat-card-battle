@@ -7,7 +7,15 @@ defineProps<{
   pack: CardPack
 }>()
 
+const emit = defineEmits<{
+  continue: []
+}>()
+
 const { cards, visible } = useCards()
+
+const handleContinue = () => {
+  emit('continue')
+}
 </script>
 
 <template>
@@ -21,21 +29,15 @@ const { cards, visible } = useCards()
     <!-- Cards Display -->
     <div class="flex flex-wrap justify-center gap-6 px-4">
       <TransitionGroup name="card">
-        <CatCardItem
-          v-for="(card, index) in cards"
-          v-show="visible"
-          :key="card.id"
-          :card="card"
-          :style="{ transitionDelay: `${index * 100}ms` }"
-        />
+        <CatCardItem v-for="(card, index) in cards" v-show="visible" :key="card.id" :card="card"
+          :style="{ transitionDelay: `${index * 100}ms` }" />
       </TransitionGroup>
     </div>
 
     <!-- Continue Button -->
     <div class="text-center mt-12">
-      <button
-        class="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold text-xl px-12 py-4 rounded-full shadow-lg transform transition-all hover:scale-105 active:scale-95"
-      >
+      <button @click="handleContinue"
+        class="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold text-xl px-12 py-4 rounded-full shadow-lg transform transition-all hover:scale-105 active:scale-95">
         Continue to Battle! ⚔️
       </button>
     </div>

@@ -33,6 +33,10 @@ const selectedPack = ref<CardPack | null>(null)
 const isAnimating = ref(false)
 const showCards = ref(false)
 
+const emit = defineEmits<{
+  'cards-revealed': []
+}>()
+
 const selectPack = async (pack: CardPack) => {
   if (isAnimating.value) {
     return
@@ -48,6 +52,10 @@ const selectPack = async (pack: CardPack) => {
   setTimeout(() => {
     showCards.value = true
   }, 1500)
+}
+
+const handleContinue = () => {
+  emit('cards-revealed')
 }
 </script>
 
@@ -67,21 +75,15 @@ const selectPack = async (pack: CardPack) => {
 
         <!-- Pack Selection -->
         <div class="relative flex flex-wrap justify-center gap-8 px-4">
-          <CardPackItem
-            v-for="pack in packs"
-            :key="pack.id"
-            :pack="pack"
-            :is-selected="selectedPack?.id === pack.id"
-            :is-animating="isAnimating"
-            @select="selectPack"
-          />
+          <CardPackItem v-for="pack in packs" :key="pack.id" :pack="pack" :is-selected="selectedPack?.id === pack.id"
+            :is-animating="isAnimating" @select="selectPack" />
         </div>
       </div>
     </Transition>
 
     <!-- Card Reveal -->
     <Transition name="fade">
-      <CardReveal v-if="showCards" :pack="selectedPack!" />
+      <CardReveal v-if="showCards" :pack="selectedPack!" @continue="handleContinue" />
     </Transition>
   </div>
 </template>
