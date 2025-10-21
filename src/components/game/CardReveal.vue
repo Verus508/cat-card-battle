@@ -27,17 +27,28 @@ const handleContinue = () => {
     </div>
 
     <!-- Cards Display -->
-    <div class="flex flex-wrap justify-center gap-6 px-4">
-      <TransitionGroup name="card">
-        <CatCardItem v-for="(card, index) in cards" v-show="visible" :key="card.id" :card="card"
-          :style="{ transitionDelay: `${index * 100}ms` }" />
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 px-4 max-w-7xl mx-auto">
+      <TransitionGroup
+        name="card"
+        class="flex flex-col sm:flex-row sm:flex-nowrap items-center justify-center gap-4 w-full"
+      >
+        <CatCardItem
+          v-for="(card, index) in cards"
+          v-show="visible"
+          :key="card.id"
+          :card="card"
+          :class="['flex-shrink-0 sm:flex-shrink', 'w-full sm:w-[180px]']"
+          :style="{ transitionDelay: `${index * 100}ms` }"
+        />
       </TransitionGroup>
     </div>
 
     <!-- Continue Button -->
     <div class="text-center mt-12">
-      <button @click="handleContinue"
-        class="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold text-xl px-12 py-4 rounded-full shadow-lg transform transition-all hover:scale-105 active:scale-95">
+      <button
+        @click="handleContinue"
+        class="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold text-xl px-12 py-4 rounded-full shadow-lg transform transition-all hover:scale-105 active:scale-95"
+      >
         Continue to Battle! ⚔️
       </button>
     </div>
