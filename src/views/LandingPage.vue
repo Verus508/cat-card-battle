@@ -3,10 +3,12 @@ import { ref } from 'vue'
 import InstructionsModal from '@/components/modals/InstructionsModal.vue'
 import PackSelection from '@/components/game/PackSelection.vue'
 import TutorialSection from '@/components/game/TutorialSection.vue'
+import BattleScene from '@/components/game/BattleScene.vue'
 
 const showModal = ref(true)
 const showPackSelection = ref(false)
 const showTutorial = ref(false)
+const showBattle = ref(false)
 
 const closeModal = () => {
   showModal.value = false
@@ -20,8 +22,7 @@ const handleCardsRevealed = () => {
 
 const handleTutorialComplete = () => {
   showTutorial.value = false
-  // Next: Navigate to battle screen
-  console.log('Tutorial complete! Ready for battle!')
+  showBattle.value = true
 }
 </script>
 
@@ -45,7 +46,7 @@ const handleTutorialComplete = () => {
     </div>
 
     <!-- Main Content -->
-    <div class="relative z-10 min-h-screen flex items-center justify-center p-4">
+    <div v-if="!showBattle" class="relative z-10 min-h-screen flex items-center justify-center p-4">
 
       <!-- Pack Selection -->
       <PackSelection v-if="showPackSelection" @cards-revealed="handleCardsRevealed" />
@@ -56,6 +57,9 @@ const handleTutorialComplete = () => {
       <!-- Instructions Modal -->
       <InstructionsModal :show="showModal" @close="closeModal" />
     </div>
+
+    <!-- Battle Scene (Full Screen) -->
+    <BattleScene v-if="showBattle" />
   </div>
 </template>
 
