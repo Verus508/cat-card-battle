@@ -64,16 +64,12 @@ const shouldCenter = computed(() => {
     </Transition>
 
     <!-- Card Pack -->
-    <img 
-      :src="packImages[pack.id]" 
-      :alt="pack.name" 
-      :class="[
-        'w-72 h-96 transform transition-all',
-        'drop-shadow-2xl hover:drop-shadow-[0_20px_40px_rgba(0,0,0,0.5)]',
-        'hover:scale-105',
-        isShaking && isSelected ? 'animate-shake' : '',
-      ]"
-    />
+    <img :src="packImages[pack.id]" :alt="pack.name" :class="[
+      'w-72 h-96 transform transition-all',
+      'drop-shadow-2xl hover:drop-shadow-[0_20px_40px_rgba(0,0,0,0.5)]',
+      'hover:scale-105',
+      isShaking && isSelected ? 'animate-shake' : '',
+    ]" />
   </div>
 </template>
 
