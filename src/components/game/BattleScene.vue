@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useCards } from '@/composables/cards'
+import type { CatCard } from '@/types/game'
 import CatCardItem from '@/components/game/CatCardItem.vue'
 import deckImage from '@/assets/images/game/deck.png'
 import ogreMinion from '@/assets/images/enemies/ogre_minion.png'
@@ -8,8 +9,25 @@ import ogreMinion from '@/assets/images/enemies/ogre_minion.png'
 const { cards } = useCards()
 const showHand = ref(false)
 
-// Randomly select 5 cards from the deck as the player's hand
+// Player's hand and battlefield
 const playerHand = ref(cards.value.slice(0, 5))
+const playerField = ref<(CatCard | null)[]>([null, null, null])
+
+const playCard = (card: CatCard) => {
+  // Find first available slot
+  const emptySlotIndex = playerField.value.findIndex(slot => slot === null)
+
+  if (emptySlotIndex !== -1) {
+    // Place card in slot
+    playerField.value[emptySlotIndex] = card
+
+    // Remove card from hand
+    const handIndex = playerHand.value.findIndex(c => c.id === card.id)
+    if (handIndex !== -1) {
+      playerHand.value.splice(handIndex, 1)
+    }
+  }
+}
 
 onMounted(() => {
   // Animate cards into hand after a brief delay
@@ -42,25 +60,27 @@ onMounted(() => {
     </div>
 
     <!-- Card Placeholders (Middle) -->
-    <div class="relative z-10 flex justify-center gap-4 py-8">
-      <!-- Opponent Card Placeholders -->
-      <div class="flex gap-2">
-        <div v-for="i in 3" :key="`opponent-${i}`"
-          class="w-20 h-28 border-2 border-dashed border-white/30 rounded-lg bg-white/5"></div>
+    <div class="relative z-10 flex justify-center py-8">
+      <!-- Player Card Slots -->
+      <div class="flex gap-4">
+        <div v-for="(card, index) in playerField" :key="`player-slot-${index}`"
+          class="w-24 h-32 border-2 border-dashed border-blue-400/50 rounded-lg bg-blue-900/20 flex items-center justify-center relative overflow-hidden">
+          <div v-if="card" class="w-[264px] h-[352px] scale-[0.34] origin-center">
+            <CatCardItem :card="card" />
+          </div>
+        </div>
       </div>
     </div>
 
     <!-- Player Area (Bottom) -->
     <div class="relative z-10 pb-8">
       <!-- Player's Hand -->
-      <div class="flex justify-center gap-4 px-4 mb-4">
+      <div class="flex justify-center gap-1 px-4 mb-4">
         <TransitionGroup name="hand-card">
           <div v-for="(card, index) in playerHand" v-show="showHand" :key="card.id"
-            class="hover:-translate-y-8 transition-transform duration-300 cursor-pointer"
-            :style="{ transitionDelay: `${index * 100}ms` }">
-            <div class="w-40">
-              <CatCardItem :card="card" />
-            </div>
+            class="hover:-translate-y-8 transition-transform duration-300 cursor-pointer w-[211px] scale-[0.8]"
+            :style="{ transitionDelay: `${index * 100}ms` }" @click="playCard(card)">
+            <CatCardItem :card="card" />
           </div>
         </TransitionGroup>
       </div>
