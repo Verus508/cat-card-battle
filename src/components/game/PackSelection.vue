@@ -45,8 +45,12 @@ const selectPack = async (pack: CardPack) => {
   selectedPack.value = pack
   isAnimating.value = true
 
+  // Set the pack ID for placeholder images
+  const cardsComposable = useCards()
+  cardsComposable.setPackId(pack.id)
+
   // Fetch cat images from API
-  await useCards().fetchCatImages()
+  await cardsComposable.fetchCatImages()
 
   // Wait for shake animation, then show cards
   setTimeout(() => {

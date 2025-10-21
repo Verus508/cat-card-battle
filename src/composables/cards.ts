@@ -2,15 +2,24 @@ import { ref } from 'vue'
 import { drawRarity, drawStats } from '@/game/stats'
 import type { CatCard, TheCatApiImage } from '@/types/game'
 import { isFirstPackClaimed, claimFirstPack } from '@/utils/firstPack'
-import placeholderImage from '@/assets/images/placeholder-card.svg'
+import wizardPackImage from '@/assets/images/packs/wizard_pack.png'
+import warriorPackImage from '@/assets/images/packs/warrior_pack.png'
+import ninjaPackImage from '@/assets/images/packs/ninja_pack.png'
 
 const amount = 5 as const
 const cards = ref<CatCard[]>([])
 const images = ref<string[]>([])
 const visible = ref(false)
 const imageLoadingStates = ref<boolean[]>([])
+const selectedPackId = ref<number>(1)
 let isFetching = false
 let hasFetched = false
+
+const packImages: Record<number, string> = {
+  1: wizardPackImage, // Mystic Pack
+  2: warriorPackImage, // Warrior Pack
+  3: ninjaPackImage, // Shadow Pack
+}
 
 export function useCards() {
   // Mocking API call for the Cat's name
@@ -84,10 +93,14 @@ export function useCards() {
     return {
       id,
       name: fetchCatName(),
-      image: placeholderImage, // Start with placeholder
+      image: packImages[selectedPackId.value] || wizardPackImage, // Start with pack placeholder
       rarity,
       stats: drawStats(rarity),
     }
+  }
+
+  const setPackId = (packId: number) => {
+    selectedPackId.value = packId
   }
 
   const loadImageForCard = async (cardIndex: number): Promise<void> => {
@@ -150,5 +163,6 @@ export function useCards() {
     fetchCatImages,
     loadImagesIncrementally,
     imageLoadingStates,
+    setPackId,
   }
 }

@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import type { CardPack } from '@/types/game'
+import wizardPackImage from '@/assets/images/packs/wizard_pack.png'
+import warriorPackImage from '@/assets/images/packs/warrior_pack.png'
+import ninjaPackImage from '@/assets/images/packs/ninja_pack.png'
 
 const props = defineProps<{
   pack: CardPack
@@ -14,6 +17,13 @@ const emit = defineEmits<{
 
 const isShaking = ref(false)
 const showStars = ref(false)
+
+// Map pack IDs to images
+const packImages: Record<number, string> = {
+  1: wizardPackImage,
+  2: warriorPackImage,
+  3: ninjaPackImage,
+}
 
 const handleClick = () => {
   if (props.isAnimating) return
@@ -33,57 +43,47 @@ const shouldCenter = computed(() => {
 </script>
 
 <template>
-  <div
-    :class="[
-      //removed the positioning class and transition from here
-      'duration-0 cursor-pointer',
-      shouldHide ? 'opacity-0 scale-0' : 'opacity-100 scale-100',
-      shouldCenter ? 'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50' : '',
-    ]"
-    @click="handleClick"
-  >
+  <div :class="[
+    //removed the positioning class and transition from here
+    'duration-0 cursor-pointer',
+    shouldHide ? 'opacity-0 scale-0' : 'opacity-100 scale-100',
+    shouldCenter ? 'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50' : '',
+  ]" @click="handleClick">
     <!-- Stars Animation -->
     <Transition name="stars">
       <div v-if="showStars && isSelected" class="absolute inset-0 pointer-events-none">
-        <div
-          v-for="i in 12"
-          :key="i"
-          :class="['absolute text-4xl', `star-${i}`]"
-          :style="{
-            left: '50%',
-            top: '50%',
-            transform: 'translate(-50%, -50%)',
-            opacity: 0,// Added opacity 0 to avoid flash
-          }"
-        >
+        <div v-for="i in 12" :key="i" :class="['absolute text-4xl', `star-${i}`]" :style="{
+          left: '50%',
+          top: '50%',
+          transform: 'translate(-50%, -50%)',
+          opacity: 0,// Added opacity 0 to avoid flash
+        }">
           ⭐
         </div>
       </div>
     </Transition>
 
     <!-- Card Pack -->
-    <div
+    <img 
+      :src="packImages[pack.id]" 
+      :alt="pack.name" 
       :class="[
-        'bg-gradient-to-br rounded-2xl shadow-2xl p-8 w-64 h-80 flex flex-col items-center justify-center transform transition-all',
-        'hover:scale-110 hover:shadow-3xl',
-        pack.color,
+        'w-72 h-96 transform transition-all',
+        'drop-shadow-2xl hover:drop-shadow-[0_20px_40px_rgba(0,0,0,0.5)]',
+        'hover:scale-105',
         isShaking && isSelected ? 'animate-shake' : '',
       ]"
-    >
-      <div class="text-7xl mb-4">{{ pack.emoji }}</div>
-      <h3 class="text-3xl font-bold text-white mb-2 text-center">{{ pack.name }}</h3>
-      <p class="text-white/90 text-center">{{ pack.description }}</p>
-      <div class="mt-4 text-6xl">🎴</div>
-    </div>
+    />
   </div>
 </template>
 
 <style scoped>
 /* Removed tanslate from shake */
 @keyframes shake {
+
   0%,
   100% {
-    transform:  rotate(0deg);
+    transform: rotate(0deg);
   }
 
   10%,
@@ -91,14 +91,14 @@ const shouldCenter = computed(() => {
   50%,
   70%,
   90% {
-    transform:  rotate(-5deg);
+    transform: rotate(-5deg);
   }
 
   20%,
   40%,
   60%,
   80% {
-    transform:  rotate(5deg);
+    transform: rotate(5deg);
   }
 }
 
@@ -111,7 +111,7 @@ const shouldCenter = computed(() => {
     transform: translate(-50%, -50%) scale(0);
     opacity: 1;
   }
-  
+
   100% {
     transform: translate(var(--x), var(--y)) scale(1);
     opacity: 0;

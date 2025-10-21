@@ -1,14 +1,22 @@
 <script setup lang="ts">
 import type { CatCard, Rarity } from '@/types/game'
-import { ref, computed } from 'vue'
-import placeholderImage from '@/assets/images/placeholder-card.svg'
+import { ref } from 'vue'
 
 const props = defineProps<{
   card: CatCard
 }>()
 
 const isImageLoaded = ref(false)
-const isPlaceholder = computed(() => props.card.image === placeholderImage)
+const isPlaceholder = ref(true)
+
+// Check if this is a real cat image (starts with http)
+const checkIfRealImage = () => {
+  if (props.card.image.startsWith('http')) {
+    isPlaceholder.value = false
+  }
+}
+
+checkIfRealImage()
 
 const rarityColors = {
   common: 'from-gray-400 to-gray-600',
