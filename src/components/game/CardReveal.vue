@@ -27,28 +27,18 @@ const handleContinue = () => {
     </div>
 
     <!-- Cards Display -->
-    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 px-4 max-w-7xl mx-auto">
-      <TransitionGroup
-        name="card"
-        class="flex flex-col sm:flex-row sm:flex-nowrap items-center justify-center gap-4 w-full"
-      >
-        <CatCardItem
-          v-for="(card, index) in cards"
-          v-show="visible"
-          :key="card.id"
-          :card="card"
-          :class="['flex-shrink-0 sm:flex-shrink', 'w-full sm:w-[180px]']"
-          :style="{ transitionDelay: `${index * 100}ms` }"
-        />
+    <div class="flex justify-center px-4">
+      <TransitionGroup name="card" tag="div" class="flex flex-wrap justify-center gap-6 max-w-5xl">
+        <CatCardItem v-for="(card, index) in cards" v-show="visible" :key="card.id" :card="card"
+          class="w-full max-w-[308px] sm:w-[calc(50%-0.75rem)] sm:max-w-[308px] lg:w-[calc(33.333%-1rem)] lg:max-w-[264px]"
+          :style="{ transitionDelay: `${index * 100}ms` }" />
       </TransitionGroup>
     </div>
 
     <!-- Continue Button -->
     <div class="text-center mt-12">
-      <button
-        @click="handleContinue"
-        class="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold text-xl px-12 py-4 rounded-full shadow-lg transform transition-all hover:scale-105 active:scale-95"
-      >
+      <button @click="handleContinue"
+        class="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold text-xl px-12 py-4 rounded-full shadow-lg transform transition-all hover:scale-105 active:scale-95">
         Continue to Battle! ⚔️
       </button>
     </div>

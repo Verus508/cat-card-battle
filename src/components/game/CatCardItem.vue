@@ -28,13 +28,11 @@ const rarityGlow = {
 </script>
 
 <template>
-  <div
-    :class="[
-      'bg-gradient-to-br rounded-xl shadow-2xl p-6 w-64 transform transition-all hover:scale-105',
-      rarityColors[card.rarity],
-      `hover:${rarityGlow[card.rarity]}`,
-    ]"
-  >
+  <div :class="[
+    'bg-gradient-to-br rounded-xl shadow-2xl p-2 w-full aspect-[3/4] transform transition-all hover:scale-105',
+    rarityColors[card.rarity],
+    `hover:${rarityGlow[card.rarity]}`,
+  ]">
     <!-- Card Header -->
     <div class="bg-white/20 backdrop-blur-sm rounded-lg p-3 mb-4">
       <h3 class="text-2xl font-bold text-white text-center truncate">{{ card.name }}</h3>
@@ -43,48 +41,11 @@ const rarityGlow = {
 
     <!-- Card Image -->
     <div
-      class="relative bg-white/30 backdrop-blur-sm rounded-lg p-2 mb-4 flex items-center justify-center h-44 overflow-hidden"
-    >
-      <!-- Placeholder Image -->
-      <Transition name="placeholder-fade">
-        <div
-          v-if="isPlaceholder"
-          key="placeholder"
-          class="absolute inset-2 flex items-center justify-center bg-gradient-to-br from-indigo-500/20 to-purple-600/20 rounded-md"
-        >
-          <img :src="placeholderImage" alt="Loading..." class="w-20 h-20 opacity-80" />
-        </div>
-      </Transition>
-
-      <!-- Real Cat Image -->
-      <Transition name="image-flip">
-        <img
-          v-if="!isPlaceholder && card.image && card.image.startsWith('http')"
-          :src="card.image"
-          alt="Cat"
-          class="w-full h-full object-cover rounded-md"
-          @load="isImageLoaded = true"
-          @error="isImageLoaded = true"
-        />
-      </Transition>
-
-      <!-- Fallback for non-HTTP images -->
-      <Transition name="image-flip">
-        <div
-          v-if="!isPlaceholder && card.image && !card.image.startsWith('http')"
-          key="emoji"
-          class="text-8xl"
-        >
-          {{ card.image || '🐱' }}
-        </div>
-      </Transition>
-
-      <!-- Loading overlay for real images -->
-      <div
-        v-if="!isPlaceholder && !isImageLoaded"
-        class="absolute inset-2 animate-pulse bg-white/50 rounded-md flex items-center justify-center"
-      >
-        <div class="text-white/70 text-sm">Loading...</div>
+      class="relative bg-white/30 backdrop-blur-sm rounded-lg p-2 mb-4 flex items-center justify-center h-44 overflow-hidden">
+      <img :src="card.image" alt="Cat" class="w-full h-full object-cover rounded-md"
+        :class="{ 'opacity-0': !isImageLoaded && !isPlaceholder }" @load="isImageLoaded = true"
+        @error="isImageLoaded = true" />
+      <div v-show="!isImageLoaded && !isPlaceholder" class="absolute inset-2 animate-pulse bg-white/50 rounded-md">
       </div>
     </div>
 

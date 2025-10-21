@@ -1,4 +1,4 @@
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 import { drawRarity, drawStats } from '@/game/stats'
 import type { CatCard, TheCatApiImage } from '@/types/game'
 import { isFirstPackClaimed, claimFirstPack } from '@/utils/firstPack'
@@ -8,7 +8,9 @@ const amount = 5 as const
 const cards = ref<CatCard[]>([])
 const images = ref<string[]>([])
 const visible = ref(false)
-const imageLoadingStates = ref<boolean[]>(new Array(amount).fill(false))
+const imageLoadingStates = ref<boolean[]>([])
+let isFetching = false
+let hasFetched = false
 
 export function useCards() {
   // Mocking API call for the Cat's name
@@ -29,36 +31,23 @@ export function useCards() {
     return result[Math.floor(Math.random() * result.length)]!
   }
 
-  // This is a filter function
-  // It filters out problematic image hosts that may return placeholder images
-  const isValidImageUrl = (url: string): boolean => {
-    const problematicHosts = ['tumblr.com', '64.media.tumblr.com', 'static.tumblr.com']
-
-    try {
-      const urlObj = new URL(url)
-      // Return true when none of the problematic hosts are substrings of the URL hostname
-      return !problematicHosts.some((host) => urlObj.hostname.includes(host))
-    } catch {
-      return false
-    }
-  }
-
   const fetchCatImages = async (): Promise<void> => {
-    const validImages: string[] = []
+    // Prevent duplicate fetches
+    if (isFetching || hasFetched) {
+      return
+    }
+
+    isFetching = true
 
     const headers: Record<string, string> = {}
     if (import.meta.env.VITE_CAT_API_KEY) {
       headers['x-api-key'] = import.meta.env.VITE_CAT_API_KEY
     }
 
-    // Keep fetching until we have exactly amount of valid images
-    while (validImages.length < amount) {
-      const needed = amount - validImages.length
-      // Over-fetch (2x needed, minimum 10) to reduce loops.
-      const requestAmount = Math.max(needed * 2, 10)
-
+    try {
+      // Request exactly what we need
       const params = new URLSearchParams({
-        limit: String(requestAmount),
+        limit: String(amount),
         size: 'small',
         order: 'RAND',
         mime_types: 'jpg,png',
@@ -74,14 +63,19 @@ export function useCards() {
       }
 
       const data = (await response.json()) as TheCatApiImage[]
+      images.value = data.map((d) => d.url)
 
-      // Filter out problematic URLs
-      const newValidImages = data.map((d) => d.url).filter(isValidImageUrl)
+      cards.value = generate(amount)
+      hasFetched = true
 
-      validImages.push(...newValidImages)
+      setTimeout(() => {
+        visible.value = true
+        // Start loading images incrementally after cards are visible
+        loadImagesIncrementally()
+      }, 500)
+    } finally {
+      isFetching = false
     }
-
-    images.value = validImages.slice(0, amount)
   }
 
   const create = (id: number, forceLegendary = false): CatCard => {
@@ -109,12 +103,12 @@ export function useCards() {
       await new Promise((resolve, reject) => {
         img.onload = resolve
         img.onerror = reject
-        img.src = images.value[cardIndex]
+        img.src = images.value[cardIndex]!
       })
 
       // Update the card with the real image
       if (cards.value[cardIndex]) {
-        cards.value[cardIndex].image = images.value[cardIndex]
+        cards.value[cardIndex]!.image = images.value[cardIndex]!
       }
     } catch (error) {
       console.warn(`Failed to load image for card ${cardIndex}:`, error)
@@ -149,26 +143,6 @@ export function useCards() {
 
     return result
   }
-
-  // Generate cards immediately with placeholders, then load real images
-  onMounted(async () => {
-    visible.value = false
-
-    // Generate cards immediately with placeholder images
-    cards.value = generate(amount)
-
-    // Show cards with placeholders first
-    setTimeout(() => (visible.value = true), 500)
-
-    // Load real images in the background
-    try {
-      await fetchCatImages()
-      await loadImagesIncrementally()
-    } catch (err) {
-      console.warn('Failed to load cat images:', err)
-      // Cards will continue showing placeholders if images fail to load
-    }
-  })
 
   return {
     cards,
